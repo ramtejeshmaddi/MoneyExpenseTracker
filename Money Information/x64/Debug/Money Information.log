@@ -1,0 +1,7 @@
+﻿  Main.cpp
+E:\C++ projects\Money Information\Money Information\Main.cpp(123,33): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\C++ projects\Money Information\Money Information\Main.cpp(248,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\C++ projects\Money Information\Money Information\Main.cpp(253,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\C++ projects\Money Information\Money Information\Main.cpp(330,38): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+E:\C++ projects\Money Information\Money Information\Main.cpp(332,42): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Money Information.vcxproj -> E:\C++ projects\Money Information\x64\Debug\Money Information.exe
