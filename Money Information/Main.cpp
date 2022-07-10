@@ -6,15 +6,18 @@
 #include <vector>
 using namespace std;
 
+// TO DO:
+/*updating code in reading stream segment, writing stream segment, and in updating expenseInfo segemnt
+* is all done now I have to update the read segment asking if I want to show the items I spent on expense
+*/
 class Caught_Error{};
 ofstream outputFile;
 ifstream readFile;
 float expenseInfo{}, paychechInfo{}, happinessMoney{};
-vector<float*> category{ &expenseInfo, &happinessMoney, &paychechInfo };
 bool invested{}, saved{}, wealthSimpleProcessedMoney{};
-string path{ "E:/C++ projects/Money Information/Money Information/moneyInfo.txt" }, lastpayDate{};
-vector<string> happinessItemsBought{};
-vector<float> h_moneySpendings{};
+string path{ "E:/C++ projects/Money Information/Money Information/moneyInfov1.2.0.txt" }, lastpayDate{};
+vector<string> happinessItemsBought{}, expenseItems{};
+vector<float> h_moneySpendings{}, expenceItemsCostEach{};
 bool readFileWasEmpty{};
 
 void error(string errorMessage) {
@@ -35,23 +38,37 @@ bool openReadStream() {
 	//check if file is empty other wise read values and assign them to feilds of the class
 	if (!readFile.eof()) {
 		short count{};
-		while (tempRead[0] != 's' && !readFile.eof()) {
+		if (tempRead[0] == 'e') {
 			tempRead.erase(0, 1);
-			*(category[count]) = stof(tempRead);
+			expenseInfo = stof(tempRead);
 			readFile >> tempRead;
-			count++;
-		}
-		getline(readFile, tempRead);
-		readFileWasEmpty = readFile.eof();
-		for (int i = 0;!readFile.eof(); i++) {
-			getline(readFile, tempRead);
-			if (tempRead == "") {
-				continue;
+			while (tempRead != "endE" && !readFile.eof()) {
+				getline(readFile, tempRead);
+				if (count % 2 == 0) {
+					expenseItems.push_back(tempRead);
+				}
+				else {
+					expenceItemsCostEach.push_back(stof(tempRead));
+				}
+				count++;
 			}
-			happinessItemsBought.push_back(tempRead);
-			getline(readFile, tempRead);
-			h_moneySpendings.push_back(stof(tempRead));
 		}
+
+		getline(readFile, tempRead);
+		if (tempRead[0] == 'h') {
+			tempRead.erase(0, 1);
+			happinessMoney = stof(tempRead);
+			while (!readFile.eof() && tempRead != "endH") {
+				getline(readFile, tempRead);
+				if (tempRead == "") {
+					continue;
+				}
+				happinessItemsBought.push_back(tempRead);
+				getline(readFile, tempRead);
+				h_moneySpendings.push_back(stof(tempRead));
+			}
+		}
+		readFileWasEmpty = readFile.eof();
 		readFileWasEmpty = false;
 	}
 	else {
@@ -84,12 +101,18 @@ bool closeOutputStream() {
 	if (outputFile.is_open()) {
 		outputFile << lastpayDate << endl;
 		outputFile << "e" << expenseInfo << endl;
+		for (int i = 0; i < expenseItems.size(); i++) {
+			outputFile << expenseItems[i] << endl;
+			outputFile << expenceItemsCostEach[i] << endl;
+		}
+		outputFile << "endE" << endl;
 		outputFile << "h" << happinessMoney << endl;
-		outputFile << "p" << paychechInfo << endl;
 		outputFile << "size" << happinessItemsBought.size();
 		for (int i = 0; i < happinessItemsBought.size(); i++) {
 			outputFile << endl << happinessItemsBought[i] << "\n" << h_moneySpendings[i];
 		}
+		outputFile << "endH" << endl;
+		outputFile << "p" << paychechInfo << endl;
 	}
 	else {
 		cout << "Output stream is not open" << endl;
@@ -192,6 +215,21 @@ start:
 				else {
 					cout << "Your expense paycheck for the month is " << paychechInfo << ", received on " << lastpayDate << "." << endl;
 					printBudget();
+					cout << "Do you want to read the expense items?" << endl;
+					cout << "1.Yes\n2.No" << endl;
+					cin >> selectedOption;
+					if (cin) {
+						if (selectedOption == 1) {
+							for (int i = 0; i < expenseItems.size(); i++) {
+								cout << i + 1 << expenseItems[i];
+								printSpaceTillYouReachPos(expenseItems[i], 30);
+								cout << expenceItemsCostEach[i] << endl;
+							}
+						}
+					}
+					else {
+						cin.clear();
+					}
 				}
 			}
 			else {
@@ -266,11 +304,22 @@ start:
 
 			//expense Info
 			else if (selectedOption == 2) {
-				cout << "Keep entering the cost of each item, and when you are done enter any letter.\n1. ";
-				float expense{}, input{};
+				cout << "Keep entering the \"item name : cost\" for each item, and when you are done enter any *.\n1. ";
+				float expense{};
+				string input{}, item{};
 				int count{2};
-				while (cin >> input) {
-					expense += input;
+				// read each item and its cost
+				while (input != "*") {
+					short eraseCount{2};
+					getline(cin, input);
+					for (int i = 0; i < input.size() && input[i] != ':'; i++) {
+						item += input[i];
+						eraseCount++;
+					}
+					expenseItems.push_back(item);
+					input.erase(0, eraseCount);
+					expense += stof(input);
+					expenceItemsCostEach.push_back(stof(input));
 					cout << count << ". ";
 					count++;
 				}
