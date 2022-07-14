@@ -13,7 +13,7 @@ using namespace std;
 class Caught_Error{};
 ofstream outputFile;
 ifstream readFile;
-float expenseInfo{}, paychechInfo{}, happinessMoney{};
+float expenseInfo{}, paychechInfo{}, happinessMoney{}, Money10{};
 bool invested{}, saved{}, wealthSimpleProcessedMoney{};
 string path{ "E:/C++ projects/Money Information/Money Information/moneyInfov1.2.0.txt" }, lastpayDate{};
 vector<string> happinessItemsBought{}, expenseItems{};
@@ -52,6 +52,13 @@ bool openReadStream() {
 				}
 				count++;
 			}
+		}
+
+		getline(readFile, tempRead);
+		if (tempRead == "m10") {
+			getline(readFile, tempRead);
+			Money10 = stof(tempRead);
+			getline(readFile, tempRead);
 		}
 
 		getline(readFile, tempRead);
@@ -106,6 +113,9 @@ bool closeOutputStream() {
 			outputFile << expenceItemsCostEach[i] << endl;
 		}
 		outputFile << "endE" << endl;
+		outputFile << "m10" << endl;
+		outputFile << Money10 << endl;
+		outputFile << "endm10" << endl;
 		outputFile << "h" << happinessMoney << endl;
 		outputFile << "size" << happinessItemsBought.size();
 		for (int i = 0; i < happinessItemsBought.size(); i++) {
@@ -153,6 +163,7 @@ void printBudget() {
 	cout << "You have the following amount available for:\n";
 	cout << "expenses: "; printSpaceTillYouReachPos("expenses", 16); cout << expenseInfo << endl;
 	cout << "happiness money: "; printSpaceTillYouReachPos("happiness money", 16); cout << happinessMoney << endl;
+	cout << "10 % Money: "; printSpaceTillYouReachPos("10 % Money", 16); cout << Money10 << endl;
 }
 
 int main() {
@@ -372,7 +383,7 @@ start:
 					lastpayDate = payCheckDate.getDate();
 				}
 				cout << "Enter paycheck amount: ";
-				float payCheckAmount{}, Money10{};
+				float payCheckAmount{};
 				cin >> payCheckAmount;
 				cout << "\nYour paycheck amount was: " << payCheckAmount << endl;
 				paychechInfo = payCheckAmount;
