@@ -7,7 +7,7 @@
 using namespace std;
 
 // TO DO:
-/*
+/* 
 */
 //Errors
 /*
@@ -18,10 +18,10 @@ ofstream outputFile;
 ifstream readFile;
 float expenseInfo{}, paychechInfo{}, happinessMoney{}, Money10{};
 bool invested{}, saved{}, wealthSimpleProcessedMoney{};
-string path{ "E:\\Git and Github\\myGitHubRepositories\\MoneyExpenseTracker\\Money Information\\moneyInfo.txt" }, lastpayDate{};
+string path{ "moneyInfo2.txt" }, lastpayDate{};
 vector<string> happinessItemsBought{}, expenseItems{};
 vector<float> h_moneySpendings{}, expenceItemsCostEach{};
-bool readFileWasEmpty{};
+bool readFileWasEmpty{}, saveMoney{};
 
 void error(string errorMessage) {
 	cout << errorMessage << endl;
@@ -35,16 +35,17 @@ bool openReadStream() {
 		return false;
 	}
 	string tempRead{};
+	getline(readFile, lastpayDate);
+	readFile >> saveMoney;
 	getline(readFile, tempRead);
-	lastpayDate = tempRead;
-	readFile >> tempRead;
+	getline(readFile, tempRead);
 	//check if file is empty other wise read values and assign them to feilds of the class
 	if (!readFile.eof()) {
 		short count{};
 		if (tempRead[0] == 'e') {
 			tempRead.erase(0, 1);
 			expenseInfo = stof(tempRead);
-			readFile >> tempRead;
+			getline(readFile, tempRead);
 			while (tempRead != "endE" && !readFile.eof()) {
 				if (tempRead != "" && tempRead != " ") {
 					if (count % 2 == 0) {
@@ -56,6 +57,10 @@ bool openReadStream() {
 					count++;
 				}
 				getline(readFile, tempRead);
+				if (readFile.eof()) {
+					cout << "Reached end of filw while trying to read expense items" << endl;
+					return false;
+				}
 
 			}
 		}
@@ -70,21 +75,21 @@ bool openReadStream() {
 		if (tempRead[0] == 'h') {
 			tempRead.erase(0, 1);
 			happinessMoney = stof(tempRead);
+			getline(readFile, tempRead);
 			while (!readFile.eof() && tempRead != "endH") {
-				getline(readFile, tempRead);
 				if (tempRead == "") {
-					continue;
-				}
-				else if (tempRead[0] == 's') {
 					getline(readFile, tempRead);
 					continue;
 				}
 				happinessItemsBought.push_back(tempRead);
 				getline(readFile, tempRead);
 				h_moneySpendings.push_back(stof(tempRead));
+				getline(readFile, tempRead);
 			}
 		}
-		readFileWasEmpty = readFile.eof();
+		getline(readFile, tempRead);
+		tempRead.erase(0, 1);
+		paychechInfo = stof(tempRead);
 		readFileWasEmpty = false;
 	}
 	else {
@@ -116,6 +121,7 @@ bool openOutputStream() {
 bool closeOutputStream() {
 	if (outputFile.is_open()) {
 		outputFile << lastpayDate << endl;
+		outputFile << saveMoney << endl;
 		outputFile << "e" << expenseInfo << endl;
 		for (int i = 0; i < expenseItems.size(); i++) {
 			outputFile << expenseItems[i] << endl;
@@ -126,9 +132,8 @@ bool closeOutputStream() {
 		outputFile << Money10 << endl;
 		outputFile << "endm10" << endl;
 		outputFile << "h" << happinessMoney << endl;
-		outputFile << "size" << happinessItemsBought.size() << endl;
 		for (int i = 0; i < happinessItemsBought.size(); i++) {
-			outputFile << endl << happinessItemsBought[i] << "\n" << h_moneySpendings[i];
+			outputFile << happinessItemsBought[i] << "\n" << h_moneySpendings[i] << endl;
 		}
 		outputFile << "endH" << endl;
 		outputFile << "p" << paychechInfo << endl;
@@ -336,6 +341,7 @@ start:
 				getline(cin, input);
 				// read each item and its cost
 				while (input != "*") {
+					item = "";
 					hasSeperator = false;
 					short eraseCount{1};
 					//read string from the input and when u reach number break;
@@ -373,6 +379,15 @@ start:
 
 			//Update paycheck info
 			else if(selectedOption == 3) {
+				cout << "Do you want to save this money?" << endl;
+				cout << "1.Yes\n2.No" << endl;
+				cin >> selectedOption;
+				if (selectedOption == 1) {
+					saveMoney = true;
+				}
+				else {
+					saveMoney = false;
+				}
 				updatePay:
 				cout << "Did you get your pay check today?\n" << "1.Yes\n" << "2.No" << endl;
 				cin >> selectedOption;
@@ -415,17 +430,22 @@ start:
 				cin >> payCheckAmount;
 				cout << "\nYour paycheck amount was: " << payCheckAmount << endl;
 				paychechInfo = payCheckAmount;
-				Money10 += payCheckAmount * 0.01 * 10;
+				Money10 = payCheckAmount * 0.01 * 10;
 				happinessMoney += Money10;
-				expenseInfo += payCheckAmount * 0.01 * 70;
+				if (!saveMoney) {
+					expenseInfo += payCheckAmount * 0.01 * 70;
+				}
 
-				cout << "Do you want to delete happiness Items info?\n1.Yes\n2.No" << endl;
+				cout << "Do you want to delete happiness Items and expense Items info?\n1.Yes\n2.No" << endl;
 				cin >> selectedOption;
 				if (cin) {
 					if (selectedOption == 1) {
 						happinessItemsBought = {};
 						h_moneySpendings = {};
-						if (happinessItemsBought.size() == h_moneySpendings.size() == 0) {
+						expenseItems = {};
+						expenceItemsCostEach = {};
+						if (happinessItemsBought.size() == 0  && 0 == h_moneySpendings.size()
+							&& expenseItems.size() == 0 && expenceItemsCostEach.size() == 0) {
 							cout << "Items successfully deleted" << endl;
 						}
 						else {
