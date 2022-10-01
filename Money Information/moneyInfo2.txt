@@ -1,20 +1,10 @@
-14 Jul 22
+
 0
-e490.543
-instacart 
-83.1
-not my orders 
-28.35
-not my orders 
--28.35
-not my order 
--28.35
+e0
 endE
 m10
-89.98
+0
 endm10
-h25.607
-zara tshirts 
-68.93
+h0
 endH
-p899.8
+p0

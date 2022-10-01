@@ -1,0 +1,22 @@
+22 sept 2022
+0
+e-7.044
+Rent
+400
+hookers
+167.54
+wealth simple withdrawal
+28
+wealth simple
+-28
+""  
+-28
+endE
+m10
+66.562
+endm10
+h38.562
+withdraw for hooker
+28
+endH
+p665.62

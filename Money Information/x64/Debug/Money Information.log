@@ -1,7 +1,7 @@
 ﻿  Main.cpp
-E:\Git and Github\myGitHubRepositories\MoneyExpenseTracker\Money Information\Main.cpp(170,33): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\Git and Github\myGitHubRepositories\MoneyExpenseTracker\Money Information\Main.cpp(312,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\Git and Github\myGitHubRepositories\MoneyExpenseTracker\Money Information\Main.cpp(317,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-E:\Git and Github\myGitHubRepositories\MoneyExpenseTracker\Money Information\Main.cpp(433,37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-E:\Git and Github\myGitHubRepositories\MoneyExpenseTracker\Money Information\Main.cpp(436,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  Money Information.vcxproj -> E:\Git and Github\myGitHubRepositories\MoneyExpenseTracker\Money Information\x64\Debug\Money Information.exe
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(42,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(322,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(327,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(443,37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(446,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Money Information.vcxproj -> F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\x64\Debug\Money Information.exe

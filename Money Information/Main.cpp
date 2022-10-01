@@ -6,8 +6,9 @@
 #include <vector>
 using namespace std;
 
+
 // TO DO:
-/* 
+/* read and write money5%
 */
 //Errors
 /*
@@ -16,7 +17,7 @@ using namespace std;
 class Caught_Error{};
 ofstream outputFile;
 ifstream readFile;
-float expenseInfo{}, paychechInfo{}, happinessMoney{}, Money10{};
+float expenseInfo{}, paychechInfo{}, happinessMoney{}, Money10{}, Money5{};
 bool invested{}, saved{}, wealthSimpleProcessedMoney{};
 string path{ "moneyInfo2.txt" }, lastpayDate{};
 vector<string> happinessItemsBought{}, expenseItems{};
@@ -27,158 +28,168 @@ void error(string errorMessage) {
 	cout << errorMessage << endl;
 	throw Caught_Error{};
 }
-
-bool openReadStream() {
-	readFile.open(path);
-	if (!readFile.is_open()) {
-		error("Error while opening read stream. File could not be opened.");
-		return false;
-	}
-	string tempRead{};
-	getline(readFile, lastpayDate);
-	readFile >> saveMoney;
-	getline(readFile, tempRead);
-	getline(readFile, tempRead);
-	//check if file is empty other wise read values and assign them to feilds of the class
-	if (!readFile.eof()) {
-		short count{};
-		if (tempRead[0] == 'e') {
-			tempRead.erase(0, 1);
-			expenseInfo = stof(tempRead);
-			getline(readFile, tempRead);
-			while (tempRead != "endE" && !readFile.eof()) {
-				if (tempRead != "" && tempRead != " ") {
-					if (count % 2 == 0) {
-						expenseItems.push_back(tempRead);
-					}
-					else {
-						expenceItemsCostEach.push_back(stof(tempRead));
-					}
-					count++;
-				}
-				getline(readFile, tempRead);
-				if (readFile.eof()) {
-					cout << "Reached end of filw while trying to read expense items" << endl;
-					return false;
-				}
-
-			}
+class Print
+{
+	
+public:
+	void static printSpaceTillYouReachPos(int cursorPositionX, int tillPositionXOnConsole) {
+		while (cursorPositionX < tillPositionXOnConsole) {
+			cout << " ";
+			cursorPositionX++;
 		}
-		getline(readFile, tempRead);
-		if (tempRead == "m10") {
-			getline(readFile, tempRead);
-			Money10 = stof(tempRead);
-			getline(readFile, tempRead);
+	}
+	static void printSpaceTillYouReachPos(string value, int tillPositionXOnConsole) {
+		int sizeOfString = value.size();
+		while (sizeOfString < tillPositionXOnConsole) {
+			cout << " ";
+			sizeOfString++;
 		}
+	}
+	static void printBudget() {
 
-		getline(readFile, tempRead);
-		if (tempRead[0] == 'h') {
-			tempRead.erase(0, 1);
-			happinessMoney = stof(tempRead);
-			getline(readFile, tempRead);
-			while (!readFile.eof() && tempRead != "endH") {
-				if (tempRead == "") {
-					getline(readFile, tempRead);
-					continue;
-				}
-				happinessItemsBought.push_back(tempRead);
-				getline(readFile, tempRead);
-				h_moneySpendings.push_back(stof(tempRead));
-				getline(readFile, tempRead);
-			}
-		}
-		getline(readFile, tempRead);
-		tempRead.erase(0, 1);
-		paychechInfo = stof(tempRead);
-		readFileWasEmpty = false;
+		cout << "You have the following amount available for:\n";
+		cout << "expenses: "; printSpaceTillYouReachPos("expenses", 16); cout << expenseInfo << endl;
+		cout << "happiness money: "; printSpaceTillYouReachPos("happiness money", 16); cout << happinessMoney << endl;
+		cout << "10 % Money: "; printSpaceTillYouReachPos("10 % Money", 16); cout << Money10 << endl;
+		cout << "5 % Money: "; printSpaceTillYouReachPos("5 % Money", 16); cout << Money5 << endl;
 	}
-	else {
-		cout << "Read File was empty" << endl;
-		readFileWasEmpty = true;
-	}
-	return true;
-}
-bool closeReadStream() {
-	readFile.close();
-	if (readFile.is_open()) {
-		error("Read file could not be closed.");
-	}
-	return true;
-}
-bool openOutputStream() {
-	try {
-		outputFile.open(path);
-		if (!outputFile.is_open()) {
-			error("Error in opening output stream.");
-		}
-		return true;
-	}
-	catch (Caught_Error) {
-		return false;
-	}
-
-}
-bool closeOutputStream() {
-	if (outputFile.is_open()) {
-		outputFile << lastpayDate << endl;
-		outputFile << saveMoney << endl;
-		outputFile << "e" << expenseInfo << endl;
-		for (int i = 0; i < expenseItems.size(); i++) {
-			outputFile << expenseItems[i] << endl;
-			outputFile << expenceItemsCostEach[i] << endl;
-		}
-		outputFile << "endE" << endl;
-		outputFile << "m10" << endl;
-		outputFile << Money10 << endl;
-		outputFile << "endm10" << endl;
-		outputFile << "h" << happinessMoney << endl;
-		for (int i = 0; i < happinessItemsBought.size(); i++) {
-			outputFile << happinessItemsBought[i] << "\n" << h_moneySpendings[i] << endl;
-		}
-		outputFile << "endH" << endl;
-		outputFile << "p" << paychechInfo << endl;
-	}
-	else {
-		cout << "Output stream is not open" << endl;
-	}
-	outputFile.close();
-	if (!outputFile.is_open()) {
-		cout << "File Closed successfully" << endl;
-		return true;
-	}
-	else {
-		cout << "File output stream not closed successfully" << endl;
-		return false;
-	}
-
-	return false;
-}
-bool WriteToOutputStream() {
-	if (!openOutputStream())
-		return false;
-
-	closeOutputStream();
-	return true;
 };
-void printSpaceTillYouReachPos(int cursorPositionX,int tillPositionXOnConsole) {
-	while (cursorPositionX < tillPositionXOnConsole) {
-		cout << " ";
-		cursorPositionX++;
+class Files {
+public:
+	static bool openReadStream() {
+		readFile.open(path);
+		if (!readFile.is_open()) {
+			error("Error while opening read stream. File could not be opened.");
+			return false;
+		}
+		string tempRead{};
+		getline(readFile, lastpayDate);
+		readFile >> saveMoney;
+		getline(readFile, tempRead);
+		getline(readFile, tempRead);
+		//check if file is empty other wise read values and assign them to feilds of the class
+		if (!readFile.eof()) {
+			short count{};
+			if (tempRead[0] == 'e') {
+				tempRead.erase(0, 1);
+				expenseInfo = stof(tempRead);
+				getline(readFile, tempRead);
+				while (tempRead != "endE" && !readFile.eof()) {
+					if (tempRead != "" && tempRead != " ") {
+						if (count % 2 == 0) {
+							expenseItems.push_back(tempRead);
+						}
+						else {
+							expenceItemsCostEach.push_back(stof(tempRead));
+						}
+						count++;
+					}
+					getline(readFile, tempRead);
+					if (readFile.eof()) {
+						cout << "Reached end of filw while trying to read expense items" << endl;
+						return false;
+					}
+
+				}
+			}
+			getline(readFile, tempRead);
+			if (tempRead == "m10") {
+				getline(readFile, tempRead);
+				Money10 = stof(tempRead);
+				getline(readFile, tempRead);
+			}
+
+			getline(readFile, tempRead);
+			if (tempRead[0] == 'h') {
+				tempRead.erase(0, 1);
+				happinessMoney = stof(tempRead);
+				getline(readFile, tempRead);
+				while (!readFile.eof() && tempRead != "endH") {
+					if (tempRead == "") {
+						getline(readFile, tempRead);
+						continue;
+					}
+					happinessItemsBought.push_back(tempRead);
+					getline(readFile, tempRead);
+					h_moneySpendings.push_back(stof(tempRead));
+					getline(readFile, tempRead);
+				}
+			}
+			getline(readFile, tempRead);
+			tempRead.erase(0, 1);
+			paychechInfo = stof(tempRead);
+			readFileWasEmpty = false;
+		}
+		else {
+			cout << "Read File was empty" << endl;
+			readFileWasEmpty = true;
+		}
+		return true;
 	}
-}
-void printSpaceTillYouReachPos(string value, int tillPositionXOnConsole) {
-	int sizeOfString = value.size();
-	while (sizeOfString < tillPositionXOnConsole) {
-		cout << " ";
-		sizeOfString++;
+	static bool closeReadStream() {
+		readFile.close();
+		if (readFile.is_open()) {
+			error("Read file could not be closed.");
+		}
+		return true;
 	}
-}
-void printBudget() {
-	cout << "You have the following amount available for:\n";
-	cout << "expenses: "; printSpaceTillYouReachPos("expenses", 16); cout << expenseInfo << endl;
-	cout << "happiness money: "; printSpaceTillYouReachPos("happiness money", 16); cout << happinessMoney << endl;
-	cout << "10 % Money: "; printSpaceTillYouReachPos("10 % Money", 16); cout << Money10 << endl;
-}
+	static bool openOutputStream() {
+		try {
+			outputFile.open(path);
+			if (!outputFile.is_open()) {
+				error("Error in opening output stream.");
+			}
+			return true;
+		}
+		catch (Caught_Error) {
+			return false;
+		}
+
+	}
+	static bool closeOutputStream() {
+		if (outputFile.is_open()) {
+			outputFile << lastpayDate << endl;
+			outputFile << saveMoney << endl;
+			outputFile << "e" << expenseInfo << endl;
+			for (int i = 0; i < expenseItems.size(); i++) {
+				outputFile << expenseItems[i] << endl;
+				outputFile << expenceItemsCostEach[i] << endl;
+			}
+			outputFile << "endE" << endl;
+			outputFile << "m10" << endl;
+			outputFile << Money10 << endl;
+			outputFile << "endm10" << endl;
+			outputFile << "h" << happinessMoney << endl;
+			for (int i = 0; i < happinessItemsBought.size(); i++) {
+				outputFile << happinessItemsBought[i] << "\n" << h_moneySpendings[i] << endl;
+			}
+			outputFile << "endH" << endl;
+			outputFile << "p" << paychechInfo << endl;
+		}
+		else {
+			cout << "Output stream is not open" << endl;
+		}
+		outputFile.close();
+		if (!outputFile.is_open()) {
+			cout << "File Closed successfully" << endl;
+			return true;
+		}
+		else {
+			cout << "File output stream not closed successfully" << endl;
+			return false;
+		}
+
+		return false;
+	}
+	static bool WriteToOutputStream() {
+		if (!openOutputStream())
+			return false;
+
+		closeOutputStream();
+		return true;
+	};
+};
+
 
 int main() {
 start:
@@ -186,8 +197,8 @@ start:
 	happinessItemsBought = {}, h_moneySpendings = {};
 	expenseItems = {}; expenceItemsCostEach = {};
 	try {
-		openReadStream();
-		closeReadStream();
+		Files::openReadStream();
+		Files::closeReadStream();
 	}
 	catch (Caught_Error) {
 		cout << "Do you want to create a new file?" << endl;
@@ -196,7 +207,7 @@ start:
 		cin >> temp;
 		if (cin) {
 			if (temp == 1) {
-				WriteToOutputStream();
+				Files::WriteToOutputStream();
 			}
 		}
 	}
@@ -229,18 +240,18 @@ start:
 						cout << "For your happiness, you spent your money on these items:" << endl;
 						for (int i = 0; i < happinessItemsBought.size(); i++) {
 							cout << i + 1 << "." << happinessItemsBought[i];
-							printSpaceTillYouReachPos(happinessItemsBought[i], 30);
+							Print::printSpaceTillYouReachPos(happinessItemsBought[i], 30);
 							cout << "cost " << h_moneySpendings[i] << endl;
 							totalSpent += h_moneySpendings[i];
 						}
-						printSpaceTillYouReachPos(0, 37);
+						Print::printSpaceTillYouReachPos(0, 37);
 						cout << totalSpent << endl;
 						cout << endl;
 					}
 				}
 				else {
 					cout << "Your expense paycheck for the month is " << paychechInfo << ", received on " << lastpayDate << "." << endl;
-					printBudget();
+					Print::printBudget();
 					cout << "Do you want to read the expense items?" << endl;
 					cout << "1.Yes\n2.No" << endl;
 					cin >> selectedOption;
@@ -248,7 +259,7 @@ start:
 						if (selectedOption == 1) {
 							for (int i = 0; i < expenseItems.size(); i++) {
 								cout << i + 1 << "." << expenseItems[i];
-								printSpaceTillYouReachPos(expenseItems[i], 30);
+								Print::printSpaceTillYouReachPos(expenseItems[i], 30);
 								cout << expenceItemsCostEach[i] << endl;
 							}
 						}
@@ -316,15 +327,15 @@ start:
 				for (int i = 0, j; i < numberOfItems; i++) {
 					j = happinessItemsBought[i].size();
 					cout << to_string(i + 1) + "." << happinessItemsBought[i];
-					printSpaceTillYouReachPos(j, 30);
+					Print::printSpaceTillYouReachPos(j, 30);
 					cout << "cost " << h_moneySpendings[i] << endl;
 					happinessTotalCost += h_moneySpendings[i];
 				}
-				printSpaceTillYouReachPos(0 , 37);
+				Print::printSpaceTillYouReachPos(0 , 37);
 				cout << happinessTotalCost << endl;
 				if (count != 1) {
 					happinessMoney -= totalCost;
-					WriteToOutputStream();
+					Files::WriteToOutputStream();
 				}
 			}
 
@@ -374,7 +385,7 @@ start:
 				cout << "The total cost was: " << expense << endl;
 				expenseInfo -= expense;
 				cout << "You still have a total of " << expenseInfo << "$ budget for this month's expenses." << endl;
-				WriteToOutputStream();
+				Files::WriteToOutputStream();
 			}
 
 			//Update paycheck info
@@ -430,10 +441,11 @@ start:
 				cin >> payCheckAmount;
 				cout << "\nYour paycheck amount was: " << payCheckAmount << endl;
 				paychechInfo = payCheckAmount;
+				Money5 = payCheckAmount * 0.01 * 5;
 				Money10 = payCheckAmount * 0.01 * 10;
 				happinessMoney += Money10;
 				if (!saveMoney) {
-					expenseInfo += payCheckAmount * 0.01 * 70;
+					expenseInfo += payCheckAmount * 0.01 * 80;
 				}
 
 				cout << "Do you want to delete happiness Items and expense Items info?\n1.Yes\n2.No" << endl;
@@ -453,8 +465,8 @@ start:
 						}
 					}
 				}
-				printBudget();
-				WriteToOutputStream();
+				Print::printBudget();
+				Files::WriteToOutputStream();
 			}
 		}
 		catch (Caught_Error) {

@@ -1,0 +1,12 @@
+﻿  Date.cpp
+  Main.cpp
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(42,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(322,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(327,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(443,37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\Main.cpp(446,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 385 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Money Information.vcxproj -> F:\My Coding Projects\Git repositories\My calculator\MoneyExpenseTracker\Money Information\x64\Release\Money Information.exe
